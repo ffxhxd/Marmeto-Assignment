@@ -36,14 +36,12 @@ async function fetchData() {
     const data = await response.json();
     console.log("Data received:", data);
 
-    // Call the function to update the product details with the fetched data
     updateProductDetails(data.product);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 
-// Call the function to fetch data when the script is executed
 fetchData();
 
 // Function to update the HTML content with product data
@@ -77,14 +75,29 @@ function updateProductDetails(productData) {
   // Update colors
   const colorsBar = document.querySelector(".colors-bar");
   colorsBar.innerHTML = "";
-  productData.options
-    .find((option) => option.name === "Color")
-    .values.forEach((color) => {
-      const colorOption = document.createElement("div");
-      colorOption.className = "color-option";
-      colorOption.style.backgroundColor = Object.values(color)[0];
-      colorsBar.appendChild(colorOption);
-    });
+  const colorOptions = productData.options.find(
+    (option) => option.name === "Color"
+  ).values;
+
+  colorOptions.forEach((color, index) => {
+    const colorOption = document.createElement("div");
+    colorOption.className = "color-option";
+    colorOption.style.backgroundColor = Object.values(color)[0];
+    colorOption.addEventListener("click", () => handleColorClick(index));
+    colorsBar.appendChild(colorOption);
+  });
+
+  function handleColorClick(index) {
+    const selectedColorOption = colorsBar.querySelector(
+      ".color-option.active-color"
+    );
+    if (selectedColorOption) {
+      selectedColorOption.classList.remove("active-color");
+    }
+
+    const clickedColorOption = colorsBar.children[index];
+    clickedColorOption.classList.add("active-color");
+  }
 
   // Update sizes
   const sizeSelector = document.querySelector(".size-selector");
@@ -108,19 +121,47 @@ function updateProductDetails(productData) {
 
 // Event handler to change the main product image based on the clicked small image
 function changeProductImage(event) {
-  // Remove the 'active-image' class from all small images
   const smallImages = document.querySelectorAll(".small-image");
   smallImages.forEach((image) => image.classList.remove("active-image"));
 
   if (event.target.classList.contains("small-image")) {
-    // Add the 'active-image' class to the clicked image
     event.target.classList.add("active-image");
 
-    // Update the main product image source
     const mainProductImage = document.getElementById("mainProductImage");
     mainProductImage.src = event.target.src;
   }
+}
 
-  // Change the style of the clicked color-option div
-  // Handling color options
+const addToCartBtn = document.getElementById("addToCartBtn");
+addToCartBtn.addEventListener("click", addToCart);
+
+function addToCart() {
+  // Get the product title
+  const productTitle = document.querySelector(
+    ".heading-container h1"
+  ).textContent;
+
+  // Get the selected size
+  const selectedSize = document.querySelector('input[name="size"]:checked');
+  const sizeValue = selectedSize ? selectedSize.id : null;
+
+  // Get the active color
+  const activeColorOption = document.querySelector(
+    ".color-option.active-color"
+  );
+  const colorValue = activeColorOption
+    ? activeColorOption.style.backgroundColor
+    : null;
+
+  if (sizeValue && colorValue) {
+    // Save the product title, selected size, and active color to local storage
+    localStorage.setItem("cartProductTitle", productTitle);
+    localStorage.setItem("cartSelectedSize", sizeValue);
+    localStorage.setItem("cartActiveColor", colorValue);
+
+    const addedProductsDiv = document.querySelector(".addedProducts");
+    addedProductsDiv.textContent = `${productTitle} with Color ${colorValue} and Size ${sizeValue} added to cart`;
+  } else {
+    alert("Please select a size and color before adding to cart");
+  }
 }

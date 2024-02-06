@@ -185,6 +185,20 @@ span {
 }
 
 /* Selected color option styles */
+/* Add the following styles for the tick */
+.color-option.active-color::after {
+  content: '\2713'; /* Unicode character for checkmark */
+  font-size: 24px;
+  color: #fff; /* Tick color */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #fff;
+  padding: 8px 16px;
+
+}
+
 
 
 /* Sizes container styles */
@@ -260,6 +274,21 @@ span {
   font-weight: 600;
   font-size: 16px;
   color: #fff;
+}
+
+.addedProducts{
+ background-color: rgba(231, 248, 183, 1);
+ text-align: center;
+ border-radius: 8px;
+ padding: 8px;
+ font-size: 14px;
+ font-weight: 600;
+}
+
+@media(max-width: 768px) {
+  .addedProducts{
+    font-size: 11px;
+   }
 }
 
 /* Media query for tablet screens */
