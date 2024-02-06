@@ -42,3 +42,8 @@ Due to issues with CDN image links in the API, the image source URLs were hard-c
 
    ```bash
    git clone https://github.com/ffxhxd/Marmeto-Assignment.git
+
+## Authors
+
+- [@fahad](https://www.github.com/ffxhxd)
+- Made with ❤️ for Marmeto
