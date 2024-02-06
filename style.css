@@ -19,7 +19,7 @@
 @media (max-width: 1024px) {
   .main-container {
     flex-direction: column;
-    margin: 20px 40px;
+    margin: 10px 40px;
     gap: 60px;
   }
 }
@@ -333,7 +333,7 @@ span {
   border: none;
   border-radius: 29.5px;
   cursor: pointer;
-  font-size: 16px;
+  
 }
 
 /* Styling for the text in the counter button */
